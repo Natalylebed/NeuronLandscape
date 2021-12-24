@@ -13,14 +13,27 @@ namespace NeuronLandscape
         //Исходящие нейроны
         public int OutputCount { get; }
 
+        //коэфициент learningRated
+        public double LearningRated { get; }
+
         //скрытые-промежуточные слои c количеством нейронов
 
         public List<int> HiddenLayersCounts { get; }
 
-        public Topology(int inputCont, int outputcount, params int [] layers)
+        //для первого теста
+        //public Topology(int inputCont, int outputcount,  params int[] layers)
+        //{
+        //    InputCont = inputCont;
+        //    OutputCount = outputcount;
+        //    HiddenLayersCounts = new List<int>();
+        //    HiddenLayersCounts.AddRange(layers);
+        //}
+   
+      public Topology(int inputCont, int outputcount,  double learningRated, params int[] layers)
         {
             InputCont = inputCont;
             OutputCount = outputcount;
+            LearningRated = learningRated;
             HiddenLayersCounts = new List<int>();
             HiddenLayersCounts.AddRange(layers);
         }

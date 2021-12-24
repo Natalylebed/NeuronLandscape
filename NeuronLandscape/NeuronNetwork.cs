@@ -20,8 +20,8 @@ namespace NeuronLandscape
             CreateHiddenLayer();
             CreateOutputLayer();
         }
-        //посылаем сигналы на следующие слои
-        public Neuron FeedForward(List<double> inputSignal)
+        //посылаем сигналы на первый  слой, потом по остальным слоям и считаем сигнал на выходе
+        public Neuron FeedForward(params double[] inputSignal)
         {
             SendSighnaltoInputNeurons(inputSignal);
             FeedFoewardAllLayersAfterInput();
@@ -54,9 +54,9 @@ namespace NeuronLandscape
         }
 
         //посылаем сигналы на первый слой
-        public void SendSighnaltoInputNeurons(List<double> inputSignal)
+        public void SendSighnaltoInputNeurons(params double[] inputSignal)
         {
-            for(int i = 0; i < inputSignal.Count; i++)
+            for(int i = 0; i < inputSignal.Length; i++)
             {
                 //создаем колекцию из одного элемента
                 var signal = new List<double>() { inputSignal[i] };
@@ -123,5 +123,50 @@ namespace NeuronLandscape
 
             layers.Add(inputlayer);
         }
+
+        //Метод для прохождения по нейронам в обратном порядке на вход -входящие нейроны и ожидаемое значение
+        private double Backpropagation(double expected, params double [] inputSignal)
+        {
+
+            var actual=FeedForward(inputSignal).Output;
+
+            var differrens = actual - expected;
+
+            //для последнего выходного слоя
+            foreach(var neoron in layers.Last().Neurons)
+            {
+                neoron.Lean(differrens,Topology.LearningRated);
+            }
+            //-2 потомучто с 0 нумерация это -1, -1 еще на последний выходной слой который не учитываем
+           //этот цикл для перебора слоев
+            for (int i = layers.Count-2; i < layers.Count; i--)
+            {
+                var layer = layers[i];
+                var previouslayer = layers[i + 1];
+               
+                //цикл для входящих сигналов с лево направо               
+                for (int j = 0; j<layer.Neurons.Count; j++)
+                {
+                    var neuron = layer.Neurons[i];
+                         //это цикл для  исходящих сигналов слево направо
+                        for (int k = 0 ; k <previouslayer.Neurons.Count; k++ )
+                    {
+                        var previousneuron = previouslayer.Neurons[k];
+
+                        //это формула №4 для подсчета скаректированных весов в hidden слоях;
+                        var error = previousneuron._weights[i]*previousneuron.Delta;
+                        neuron.Lean(error, Topology.LearningRated);
+
+                    }
+                   
+              
+                }
+            }
+            var result = differrens * differrens;
+
+            return result;
+
+        }
+        
     }
 }
