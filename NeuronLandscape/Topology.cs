@@ -20,7 +20,7 @@ namespace NeuronLandscape
 
         public List<int> HiddenLayersCounts { get; }
 
-        //для первого теста
+        //для первого теста TestsWithoutLeaning
         //public Topology(int inputCont, int outputcount,  params int[] layers)
         //{
         //    InputCont = inputCont;
@@ -28,8 +28,8 @@ namespace NeuronLandscape
         //    HiddenLayersCounts = new List<int>();
         //    HiddenLayersCounts.AddRange(layers);
         //}
-   
-      public Topology(int inputCont, int outputcount,  double learningRated, params int[] layers)
+
+        public Topology(int inputCont, int outputcount,  double learningRated, params int[] layers)
         {
             InputCont = inputCont;
             OutputCount = outputcount;

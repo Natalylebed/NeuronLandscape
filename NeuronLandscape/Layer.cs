@@ -10,7 +10,7 @@ namespace NeuronLandscape
     {
         public List<Neuron> Neurons {get;}
 
-        public int Count => Neurons?.Count ?? 0;
+        public int NeuronCount => Neurons?.Count ?? 0;
 
         //В одном слое должны быть нейроны только одного типа
         public Layer(List<Neuron> neurons,NeuronType type=NeuronType.Normal)
