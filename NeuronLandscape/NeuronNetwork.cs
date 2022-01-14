@@ -123,6 +123,24 @@ namespace NeuronLandscape
 
             layers.Add(inputlayer);
         }
+        //epoch -это эпоха ...один прогон по сети-одна эпоха
+        public double Lean(List<Tuple<double,double[]>> dataset, int epoch)
+        {
+            var error = 0.0;
+
+            for(int i = 0; i < epoch; i++)
+            {
+                foreach(var data in dataset)
+                {
+                    error += Backpropagation(data.Item1,data.Item2); 
+
+              }
+
+            }
+
+            var result = error / epoch;
+            return result;
+        }
 
         //Метод для прохождения по нейронам в обратном порядкес выхода на вход(справо налево)(метод обратного распространения ошибки)-входящие нейроны и ожидаемое значение
         private double Backpropagation(double expected, params double [] inputSignal)

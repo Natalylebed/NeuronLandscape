@@ -48,9 +48,16 @@ namespace NeuronLandscape
 
             for (int i = 0; i < inputCount; i++)
             {
+                if (_neuronType == NeuronType.Input)
+                {
+                    _weights.Add(1);
+                }
+                else
+                { 
+                   _weights.Add(ran.NextDouble());
+                }
 
-                _input.Add(ran.Next(0,1));
-                _weights.Add(ran.NextDouble());
+                _input.Add(0);
             }
         }
 
@@ -98,17 +105,17 @@ namespace NeuronLandscape
 
             return result;
         }
-        public void SetWigths(params double[] weights)
-        {
-            //TODO сделать проверку что кол-во Unput равно весам
-            //TODO удалить этот код после написания возможности обучения сети
-            for (int i = 0; i < weights.Length; i++)
-            {
-                _weights[i] = weights[i];
-            }
+        //public void SetWigths(params double[] weights)
+        //{
+        //    //TODO сделать проверку что кол-во Unput равно весам
+        //    //TODO удалить этот код после написания возможности обучения сети
+        //    for (int i = 0; i < weights.Length; i++)
+        //    {
+        //        _weights[i] = weights[i];
+        //    }
 
             
-        }
+        //}
 
         //Обучаем систему-присваеваем новый текущий вес нейрона  по формуле - обратное распределение ошибки. Error-разница между ткущим значением и ожидаемым. leanRate-коэфициент устанавливается опытным путем
         public void Lean(double error, double leanRate)

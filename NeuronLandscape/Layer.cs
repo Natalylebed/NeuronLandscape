@@ -12,6 +12,8 @@ namespace NeuronLandscape
 
         public int NeuronCount => Neurons?.Count ?? 0;
 
+        public NeuronType Type;
+
         //В одном слое должны быть нейроны только одного типа
         public Layer(List<Neuron> neurons,NeuronType type=NeuronType.Normal)
         {
@@ -24,6 +26,7 @@ namespace NeuronLandscape
                 else
                 {
                     Neurons = neurons;
+                    Type = type;
                 }
             }
 
@@ -40,6 +43,10 @@ namespace NeuronLandscape
             return result;
         }
 
+        public override string ToString()
+        {
+            return Type.ToString();
+        }
 
 
 
@@ -71,6 +78,5 @@ namespace NeuronLandscape
 
 
 
-            
     }
 }
