@@ -25,8 +25,8 @@ namespace NeuronLandscape
         {
             SendSighnaltoInputNeurons(inputSignal);
             FeedFoewardAllLayersAfterInput();
-           //если на выходе один нейрон
-            if(Topology.OutputCount == 1)
+            //если на выходе один нейрон
+            if (Topology.OutputCount == 1)
             {
                 return layers.Last().Neurons[0];
             }
@@ -56,40 +56,40 @@ namespace NeuronLandscape
         //посылаем сигналы на первый слой
         public void SendSighnaltoInputNeurons(params double[] inputSignal)
         {
-            for(int i = 0; i < inputSignal.Length; i++)
+            for (int i = 0; i < inputSignal.Length; i++)
             {
                 //создаем колекцию из одного элемента
                 var signal = new List<double>() { inputSignal[i] };
-               
+
                 var neuron = layers[0].Neurons[i];
-               
+
                 neuron.FeedForward(signal);
             }
         }
         private void CreateHiddenLayer()
         {
-           
+
             for (int i = 0; i < Topology.HiddenLayersCounts.Count; i++)
             {
-                
+
                 var hiddenNeurons = new List<Neuron>();
-               
+
                 var lastLayer = layers.Last();
 
                 for (int j = 0; j < Topology.HiddenLayersCounts[i]; j++)
-            {
-                    
-           //Normal по умолчанию
-                var neuron = new Neuron(lastLayer.NeuronCount);
-                 
+                {
+
+                    //Normal по умолчанию
+                    var neuron = new Neuron(lastLayer.NeuronCount);
+
                     hiddenNeurons.Add(neuron);
-            }
+                }
 
                 var hiddentlayer = new Layer(hiddenNeurons);
-              
+
                 layers.Add(hiddentlayer);
             }
-     
+
         }
 
         private void CreateOutputLayer()
@@ -124,17 +124,17 @@ namespace NeuronLandscape
             layers.Add(inputlayer);
         }
         //epoch -это эпоха ...один прогон по сети-одна эпоха
-        public double Lean(List<Tuple<double,double[]>> dataset, int epoch)
+        public double Lean(List<Tuple<double, double[]>> dataset, int epoch)
         {
             var error = 0.0;
 
-            for(int i = 0; i < epoch; i++)
+            for (int i = 0; i < epoch; i++)
             {
-                foreach(var data in dataset)
+                foreach (var data in dataset)
                 {
-                    error += Backpropagation(data.Item1,data.Item2); 
+                    error += Backpropagation(data.Item1, data.Item2);
 
-              }
+                }
 
             }
 
@@ -143,26 +143,26 @@ namespace NeuronLandscape
         }
 
         //Метод для прохождения по нейронам в обратном порядкес выхода на вход(справо налево)(метод обратного распространения ошибки)-входящие нейроны и ожидаемое значение
-        private double Backpropagation(double expected, params double [] inputSignal)
+        private double Backpropagation(double expected, params double[] input)
         {
 
-            var actual=FeedForward(inputSignal).Output;
+            var actual = FeedForward(input).Output;
 
             var differrens = actual - expected;
 
             //для последнего выходного output слоя -исправляем коэфициенты
-            foreach(var neoron in layers.Last().Neurons)
+            foreach (var neoron in layers.Last().Neurons)
             {
-                neoron.Lean(differrens,Topology.LearningRated);
+                neoron.Lean(differrens, Topology.LearningRated);
             }
             //-2 потомучто с 0 нумерация это 1, -1 еще на последний выходной слой который не учитываем
 
             //этот цикл для перебора слоев  с право налево
-            for (int i = layers.Count - 2; i < layers.Count; i--)
+            for (int i = layers.Count - 2; i >= 0; i--)
             {
                 var layer = layers[i];
                 var previouslayer = layers[i + 1];
-               
+
                 //цикл для  сигналов на расматриваемом слое(если смотреть справо налево)              
                 for (int j = 0; j < layer.NeuronCount; j++)
                 {
@@ -170,7 +170,7 @@ namespace NeuronLandscape
                     //это цикл для исправления веса с предыдущего слоя 
                     //(если смотреть справо налево поэтому previouslayer = layers[i + 1])
                     //-кол-во входящих с предыдущего слоя сигнилов равно кол-ву сигналов на предыдущем слое
-                    for (int k = 0 ; k < previouslayer.NeuronCount; k++ )
+                    for (int k = 0; k < previouslayer.NeuronCount; k++)
                     {
                         var previousneuron = previouslayer.Neurons[k];
 
@@ -181,8 +181,8 @@ namespace NeuronLandscape
                         neuron.Lean(error, Topology.LearningRated);
 
                     }
-                   
-              
+
+
                 }
             }
             var result = differrens * differrens;
@@ -190,6 +190,6 @@ namespace NeuronLandscape
             return result;
 
         }
-        
+
     }
 }

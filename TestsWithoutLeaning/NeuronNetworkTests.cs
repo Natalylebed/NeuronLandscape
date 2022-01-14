@@ -43,10 +43,10 @@ namespace NeuronLandscape.Tests
             };
            
             
-            var topology = new Topology(4, 1, 0,1, 2);
+            var topology = new Topology(4, 1, 0.1, 2);
             var neuronNetwork = new NeuronNetwork(topology);
 
-            var difference = neuronNetwork.Lean(database,100000);
+            var difference = neuronNetwork.Lean(database,1000000);
 
             var result = new List<double>();
 

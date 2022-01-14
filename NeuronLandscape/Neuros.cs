@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NeuronLandscape
@@ -46,6 +47,9 @@ namespace NeuronLandscape
         {
             var ran = new Random ();
 
+            //чтобы рандом был рандомный
+            Thread.Sleep(100);
+
             for (int i = 0; i < inputCount; i++)
             {
                 if (_neuronType == NeuronType.Input)
@@ -64,18 +68,18 @@ namespace NeuronLandscape
         //FeedForward -это переборга значений слева направо (если хоотично то это называется рекурсия)
         //перемножаем вес на входящий значение
 
-        public double FeedForward(List<double> input)
+        public double FeedForward(List<double> inputs)
         {
-            for(int i = 0; i < input.Count; i++)
+            for(int i = 0; i < inputs.Count; i++)
             {
-                input[i] = _input[i];
+                _input[i]=inputs[i] ;
             }
 
             var sum = 0.0;
 
-            for(int i = 0; i < input.Count; i++)
+            for(int i = 0; i < inputs.Count; i++)
             {
-                sum +=  input[i] * _weights[i];
+                sum +=  inputs[i] * _weights[i];
             }
            
 
@@ -100,8 +104,10 @@ namespace NeuronLandscape
         private double Sigmoidxd(double x)
         {
             var sigm = Sigmoid(x);
+            //у автора ошибка в формуле
+            //var result = sigm / 1 - sigm;
 
-            var result = sigm / 1 - sigm;
+            var result = sigm *( 1 - sigm);
 
             return result;
         }
