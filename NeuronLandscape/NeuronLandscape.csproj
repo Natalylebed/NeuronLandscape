@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Include="E:\NeuronNetworcTestLean\NeuronNetwork.cs" Link="NeuronNetwork.cs" />
-    <Compile Include="E:\NeuronNetwork\NeuronLandscape.cs" Link="NeuronLandscape.cs" />
   </ItemGroup>
 
 </Project>
