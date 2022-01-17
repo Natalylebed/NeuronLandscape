@@ -92,6 +92,7 @@ namespace NeuronLandscape
 
         }
 
+      
         private void CreateOutputLayer()
         {
             var outputneurons = new List<Neuron>();
@@ -122,6 +123,50 @@ namespace NeuronLandscape
             var inputlayer = new Layer(inputneurons, NeuronType.Input);
 
             layers.Add(inputlayer);
+        }
+
+
+        //маштобирование по колонке чере мин и максимольное значение на вход двухмерный массив
+        public double[,] Scalling(double [,] input)
+        {
+            //0-строка.1-колонка
+            var result = new double[input.GetLength(1),input.GetLength(2)];
+            {
+                //берем колонки
+                for(int column = 0; column < input.GetLength(1); column ++)
+                {
+                    var max = input[0, column];
+                    var min = input[0, column];
+
+                    //в колонке перебераем значения по строкам ищем min и max
+                   for(int row =1; row<input.GetLength(0);row ++)
+                    {
+                        var item = input[row, column];
+                           
+                        if( item > max)
+                        { 
+                            max = item;
+                        }
+                            if(item < min)
+                        {
+                            min = item;
+                        }
+                                         
+                    }
+                    var delta = (max - min);
+                    //пробегаем опять по значениям по строкам и заменяем их отмаштобированными значениями
+                    for (int row = 1; row < input.GetLength(0); row++)
+                    {
+                        var newnitem = (input[row,column] - min) / delta;
+
+                        result[row, column] = newnitem;
+
+                    }
+
+                }
+                return result;
+                   
+            }
         }
         //epoch -это эпоха ...один прогон по сети-одна эпоха
         public double Lean(List<Tuple<double, double[]>> dataset, int epoch)
