@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NeuronLandscape.Tests
-{
+{   /// <summary>
+/// с обучением тест неправильно называется
+/// </summary>
     [TestClass()]
     public class NeuronNetworkTests
     {
@@ -16,8 +18,8 @@ namespace NeuronLandscape.Tests
         {
             var database=new List<Tuple<double,double[]>>
             {
-                // Результат - Пациент болен - 1
-                //             Пациент Здоров - 0
+                // Результат-то что должно быть на выходе, заранее продумали - Пациент болен - 1
+                //                                                             Пациент Здоров - 0
 
                 // Неправильная температура T
                 // Хороший возраст A
@@ -45,17 +47,19 @@ namespace NeuronLandscape.Tests
             
             var topology = new Topology(4, 1, 0.1, 2);
             var neuronNetwork = new NeuronNetwork(topology);
+           
+            //обучили сеть методом обратной ошибки
 
             var difference = neuronNetwork.Lean(database,1000000);
 
             var result = new List<double>();
-
+            //сдемали прогон по сети с новами коэфициентами после обучения
             foreach(var data in database)
             {
                var res= neuronNetwork.FeedForward(data.Item2).Output;
                 result.Add(res);
             }
-
+            //сравниваем то что должно получиться -заранее псчитали и наш результат
             for(int i = 0; i < result.Count; i++)
             {
                 var expected = Math.Round(database[i].Item1, 3);
