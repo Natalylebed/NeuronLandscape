@@ -92,7 +92,7 @@ namespace NeuronLandscape
 
         }
 
-      
+
         private void CreateOutputLayer()
         {
             var outputneurons = new List<Neuron>();
@@ -124,40 +124,77 @@ namespace NeuronLandscape
 
             layers.Add(inputlayer);
         }
-
-
-        //маштобирование по колонке чере мин и максимольное значение на вход двухмерный массив
-        public double[,] Scalling(double [,] input)
+        //нормализация значений ...на вход и выход двухмерный массив
+        public double[,] Nornalizatoin(double[,] input)
         {
             //0-строка.1-колонка
-            var result = new double[input.GetLength(1),input.GetLength(2)];
+            var result = new double[input.GetLength(0), input.GetLength(1)];
+
+            for (int colum = 0; colum < input.GetLength(1); colum++)
+            {
+               
+                var sum = 0.0;
+                double avr = 0;
+                double delta = 0;
+
+                //среднее значение нейрона
+                for (int row = 0; row < input.GetLength(0); row++)
+                {                
+                   sum += input[row, colum];
+                }
+                avr = sum / input.GetLength(0);
+
+                //стандартное отклонение
+                var sumvr = 0.0;
+                for (int row = 0; row < input.GetLength(0); row++)
+                {                   
+                 sumvr += Math.Pow(input[row, colum] - avr, 2);                   
+                }
+                delta = Math.Sqrt(sumvr/ input.GetLength(0));
+
+                //новое значение сигнала
+                for (int row = 0; row < input.GetLength(0); row++)
+                {                    
+                    result[row, colum] = input[row, colum] - avr / delta;
+                }
+
+            }
+            return result;
+
+        }
+
+        //маштобирование по колонке чере мин и максимольное значение 
+        public double[,] Scalling(double[,] input)
+        {
+            //0-строка.1-колонка
+            var result = new double[input.GetLength(0), input.GetLength(1)];
             {
                 //берем колонки
-                for(int column = 0; column < input.GetLength(1); column ++)
+                for (int column = 0; column < input.GetLength(1); column++)
                 {
                     var max = input[0, column];
                     var min = input[0, column];
 
-                    //в колонке перебераем значения по строкам ищем min и max
-                   for(int row =1; row<input.GetLength(0);row ++)
+                    //в колонке перебераем значения по строкам ищем min и max row 0 уже взяли
+                    for (int row = 1; row < input.GetLength(0); row++)
                     {
                         var item = input[row, column];
-                           
-                        if( item > max)
-                        { 
+
+                        if (item > max)
+                        {
                             max = item;
                         }
-                            if(item < min)
+                        if (item < min)
                         {
                             min = item;
                         }
-                                         
+
                     }
                     var delta = (max - min);
                     //пробегаем опять по значениям по строкам и заменяем их отмаштобированными значениями
                     for (int row = 1; row < input.GetLength(0); row++)
                     {
-                        var newnitem = (input[row,column] - min) / delta;
+                        var newnitem = (input[row, column] - min) / delta;
 
                         result[row, column] = newnitem;
 
@@ -165,7 +202,7 @@ namespace NeuronLandscape
 
                 }
                 return result;
-                   
+
             }
         }
         //epoch -это эпоха ...один прогон по сети-одна эпоха
