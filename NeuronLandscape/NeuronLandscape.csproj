@@ -6,8 +6,5 @@
     <AnalysisLevel>5.0</AnalysisLevel>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="E:\NeuronNetworcTestLean\NeuronNetwork.cs" Link="NeuronNetwork.cs" />
-  </ItemGroup>
-
+  
 </Project>
