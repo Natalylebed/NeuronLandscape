@@ -132,29 +132,29 @@ namespace NeuronLandscape
 
             for (int colum = 0; colum < input.GetLength(1); colum++)
             {
-               
+
                 var sum = 0.0;
                 double avr = 0;
                 double delta = 0;
 
                 //среднее значение нейрона
                 for (int row = 0; row < input.GetLength(0); row++)
-                {                
-                   sum += input[row, colum];
+                {
+                    sum += input[row, colum];
                 }
                 avr = sum / input.GetLength(0);
 
                 //стандартное отклонение
                 var sumvr = 0.0;
                 for (int row = 0; row < input.GetLength(0); row++)
-                {                   
-                 sumvr += Math.Pow(input[row, colum] - avr, 2);                   
+                {
+                    sumvr += Math.Pow(input[row, colum] - avr, 2);
                 }
-                delta = Math.Sqrt(sumvr/ input.GetLength(0));
+                delta = Math.Sqrt(sumvr / input.GetLength(0));
 
                 //новое значение сигнала
                 for (int row = 0; row < input.GetLength(0); row++)
-                {                    
+                {
                     result[row, colum] = input[row, colum] - avr / delta;
                 }
 
@@ -206,28 +206,42 @@ namespace NeuronLandscape
             }
         }
         //epoch -это эпоха ...один прогон по сети-одна эпоха
-        public double Lean(List<Tuple<double, double[]>> dataset, int epoch)
+        public double Lean(double[] expected, double[,] inputs, int epoch)
         {
             var error = 0.0;
-
-            for (int i = 0; i < epoch; i++)
+            for (int k = 0; k < epoch; k++)
             {
-                foreach (var data in dataset)
+                for (int j = 0; j < expected.Length; j++)
                 {
-                    error += Backpropagation(data.Item1, data.Item2);
+                    var output = expected[j];
+
+                    var input = GetRow(inputs, j);
+
+                    error += Backpropagation(output, input);
+                }
+               
+            }
+            var result = error / epoch;
+            return result;
+        }
+
+        public double[] GetRow(double[,] matrix,int row)
+        {
+                var colum = matrix.GetLength(1);
+                var arr = new double[colum];
+                for (int n = 0; n < colum; ++n)
+                {
+                    arr[n] = matrix[row, n];
 
                 }
 
-            }
-
-            var result = error / epoch;
-            return result;
+                return arr;
         }
 
         //Метод для прохождения по нейронам в обратном порядкес выхода на вход(справо налево)(метод обратного распространения ошибки)-входящие нейроны и ожидаемое значение
         private double Backpropagation(double expected, params double[] input)
         {
-
+           
             var actual = FeedForward(input).Output;
 
             var differrens = actual - expected;

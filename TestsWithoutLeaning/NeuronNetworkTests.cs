@@ -16,32 +16,32 @@ namespace NeuronLandscape.Tests
         [TestMethod()]
         public void FeedForwardTest()
         {
-            var database=new List<Tuple<double,double[]>>
+            var output=new double[] { 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1 };
+            var input = new double[,]
             {
                 // Результат-то что должно быть на выходе, заранее продумали - Пациент болен - 1
                 //                                                             Пациент Здоров - 0
-
                 // Неправильная температура T
                 // Хороший возраст A
                 // Курит S
                 // Правильно питается F
                                                          //T  A  S  F
-               new Tuple<double,double[]>(0, new double[]{ 0, 0, 0, 0 }),
-               new Tuple<double,double[]>(0, new double[]{ 0, 0, 0, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 0, 0, 1, 0 }),
-               new Tuple<double,double[]>(0, new double[]{ 0, 0, 1, 1 }),
-               new Tuple<double,double[]>(0, new double[]{ 0, 1, 0, 0 }),
-               new Tuple<double,double[]>(0, new double[]{ 0, 1, 0, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 0, 1, 1, 0 }),
-               new Tuple<double,double[]>(0, new double[]{ 0, 1, 1, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 0, 0, 0 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 0, 0, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 0, 1, 0 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 0, 1, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 1, 0, 0 }),
-               new Tuple<double,double[]>(0, new double[]{ 1, 1, 0, 1 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 1, 1, 0 }),
-               new Tuple<double,double[]>(1, new double[]{ 1, 1, 1, 1 })
+               { 0, 0, 0, 0 },
+               { 0, 0, 0, 1 },
+               { 0, 0, 1, 0 },
+               { 0, 0, 1, 1 },
+               { 0, 1, 0, 0 },
+               { 0, 1, 0, 1 },
+               { 0, 1, 1, 0 },
+               { 0, 1, 1, 1 },
+               { 1, 0, 0, 0 },
+               { 1, 0, 0, 1 },
+               { 1, 0, 1, 0 },
+               { 1, 0, 1, 1 },
+               { 1, 1, 0, 0 },
+               { 1, 1, 0, 1 },
+               { 1, 1, 1, 0 },
+               { 1, 1, 1, 1 }
             };
            
             
@@ -50,19 +50,21 @@ namespace NeuronLandscape.Tests
            
             //обучили сеть методом обратной ошибки
 
-            var difference = neuronNetwork.Lean(database,1000000);
+            var difference = neuronNetwork.Lean(output, input, 1000000);
 
             var result = new List<double>();
             //сдемали прогон по сети с новами коэфициентами после обучения
-            foreach(var data in database)
+            for(int i = 0; i< output.Length; i++)
             {
-               var res= neuronNetwork.FeedForward(data.Item2).Output;
+                var row = neuronNetwork.GetRow(input,i);
+                var res = neuronNetwork.FeedForward(row).Output;
                 result.Add(res);
             }
+           
             //сравниваем то что должно получиться -заранее псчитали и наш результат
-            for(int i = 0; i < result.Count; i++)
+            for(int i = 0; i <result.Count; i++)
             {
-                var expected = Math.Round(database[i].Item1, 3);
+                var expected =Math.Round(output[i],3);
                 var actual = Math.Round(result[i], 3);
                 Assert.AreEqual(expected, actual);
             }
