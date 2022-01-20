@@ -23,6 +23,7 @@ namespace NeuronLandscape
         //посылаем сигналы на первый  слой, потом по остальным слоям и считаем сигнал на выходе
         public Neuron FeedForward(params double[] inputSignal)
         {
+
             SendSighnaltoInputNeurons(inputSignal);
             FeedFoewardAllLayersAfterInput();
             //если на выходе один нейрон
@@ -208,6 +209,7 @@ namespace NeuronLandscape
         //epoch -это эпоха ...один прогон по сети-одна эпоха
         public double Lean(double[] expected, double[,] inputs, int epoch)
         {
+            var signal = Nornalizatoin(inputs);
             var error = 0.0;
             for (int k = 0; k < epoch; k++)
             {
@@ -215,7 +217,7 @@ namespace NeuronLandscape
                 {
                     var output = expected[j];
 
-                    var input = GetRow(inputs, j);
+                    var input = GetRow(signal, j);
 
                     error += Backpropagation(output, input);
                 }
