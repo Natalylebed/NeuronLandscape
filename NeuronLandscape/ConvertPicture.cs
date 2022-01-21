@@ -35,6 +35,7 @@ namespace NeuronLandscape
             }
             return result;
         }
+        //формула по которой темно-серое становиться черным, а светлое белым.
         private double Brightness(Color pixel)
         {
             var result = 0.299 * pixel.R + 0.587 * pixel.G + 0.114 * pixel.B;

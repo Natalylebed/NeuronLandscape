@@ -15,6 +15,7 @@ namespace NeuronLandscape.Tests
     public class NeuronNetworkTests
     {
         [TestMethod()]
+        //тест с обучением
         public void FeedForwardTest()
         {
             var output=new double[] { 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1 };
@@ -73,6 +74,7 @@ namespace NeuronLandscape.Tests
             //Assert.Fail();
         }
         [TestMethod()]
+        //тест с обучением и маштобированием доделать
         public void Database()
         {
             var outputs = new List<double>();
@@ -126,6 +128,74 @@ namespace NeuronLandscape.Tests
                 Assert.AreEqual(expected, actual);
             }
 
+        }
+
+        [TestMethod()]
+        //тест с c изображениями малярии
+        public void RecognazedImage()
+        {
+            var pathParasitized = @"‪E:\Neuron Dataset\Parasitized\";
+            var pathUnparasitized = @"‪E:\Neuron Dataset\Unparasitized\";
+
+            var convert = new ConvertPicture();
+
+            var testimagparasit = @"E:\Neuron Landscape\TestsWithoutLeaning\image\Parasitized.png";
+            var converttestimageparasit = convert.ConvertInPixel(testimagparasit);
+
+            var testimagunparasit = @"E:\Neuron Landscape\TestsWithoutLeaning\image\Unparasitized.png";
+            var converttestimageUnparasit = convert.ConvertInPixel(testimagunparasit);
+
+            var topology = new Topology(converttestimageparasit.Count, 1, 0.1, converttestimageparasit.Count / 2);
+            var newnetwork = new NeuronNetwork(topology);
+
+
+            double[,] inputsignalparasit = GetDataParasit(pathParasitized, convert, converttestimageparasit);
+            newnetwork.Lean(new double[] { 1.0 }, inputsignalparasit, 100);
+
+            double[,] inputsignalUnParasit = GetDataUnParasit(pathUnparasitized, convert, converttestimageparasit);
+            newnetwork.Lean(new double[] { 0.0 }, inputsignalUnParasit, 100);
+
+            var actualparasit = newnetwork.FeedForward(converttestimageparasit.ToArray()).Output;
+            Assert.AreEqual(1, Math.Round(actualparasit,2));
+
+            var actualunparasit = newnetwork.FeedForward(converttestimageUnparasit.ToArray()).Output;
+            Assert.AreEqual(0, Math.Round(actualunparasit,2));
+        }
+      
+        private static double[,] GetDataParasit(string pathParasitized, ConvertPicture convert, List<double> converttestimage)
+        {
+            var parasitizenimage = Directory.GetFiles(pathParasitized);
+            var size = 100;
+            var inputsignal = new double[size, converttestimage.Count];
+            for (int i = 0; i < 100; i++)
+            {
+                var convertinblack = convert.ConvertInPixel(parasitizenimage[i]);
+                for (int j = 0; j < convertinblack.Count; j++)
+                {
+                    inputsignal[i, j] = convertinblack[i];
+                }
+
+            }
+
+            return inputsignal;
+        }
+
+        private static double[,] GetDataUnParasit(string pathUnparasitized, ConvertPicture convert, List<double> converttestimage)
+        {
+            var unParasitizenimage = Directory.GetFiles(pathUnparasitized);
+            var size = 100;
+            var inputsignal = new double[size, converttestimage.Count];
+            for (int i = 0; i < 100; i++)
+            {
+                var convertinblack = convert.ConvertInPixel(unParasitizenimage[i]);
+                for (int j = 0; j < convertinblack.Count; j++)
+                {
+                    inputsignal[i, j] = convertinblack[i];
+                }
+
+            }
+
+            return inputsignal;
         }
     }
 }
