@@ -10,12 +10,30 @@ using System.Windows.Forms;
 
 namespace MedicalSystem
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+
+            ToolStripMenuItem fileItem = new ToolStripMenuItem("Файл");
+
+            fileItem.DropDownItems.Add("Изображение");
+            fileItem.DropDownItems.Add(new ToolStripMenuItem("Создать"));
+            fileItem.DropDownItems.Add(new ToolStripMenuItem("Выход"));
+
+            File.Items.Add(fileItem);
+
+            ToolStripMenuItem aboutItem = new ToolStripMenuItem("О программе");
+            aboutItem.Click += aboutItem_Click;
+           File.Items.Add(aboutItem);
         }
+        void aboutItem_Click(object sender, EventArgs e)
+        {
+            var aboutForm = new AboutBox1();
+            aboutForm.ShowDialog();
+
 
     }
 }
+        

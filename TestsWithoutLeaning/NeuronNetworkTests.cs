@@ -134,13 +134,14 @@ namespace NeuronLandscape.Tests
         //тест с c изображениями малярии
         public void RecognazedImage()
         {
-            var pathParasitized = @"Parasitized\";
-            var pathUnparasitized = @"Uninfected\";
+            var pathParasitized = @"E:\NeuronDataset\Parasitized\";
+            //var pathParasitized = @"Parasitized\";
+            var pathUnparasitized = @"E:\NeuronDataset\ninfected\";
 
             var convert = new ConvertPicture();
-
-            var testimagparasit = @"E:\Neuron Landscape\TestsWithoutLeaning\image\Parasitized.png";
-            var converttestimageparasit = convert.ConvertInPixel(testimagparasit);
+            
+        var testimagparasit = @"E:\Neuron Landscape\TestsWithoutLeaning\image\Parasitized.png";
+        var converttestimageparasit = convert.ConvertInPixel(testimagparasit);
 
             var testimagunparasit = @"E:\Neuron Landscape\TestsWithoutLeaning\image\Unparasitized.png";
             var converttestimageUnparasit = convert.ConvertInPixel(testimagunparasit);
