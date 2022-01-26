@@ -134,8 +134,8 @@ namespace NeuronLandscape.Tests
         //тест с c изображениями малярии
         public void RecognazedImage()
         {
-            var pathParasitized = @"‪E:\Neuron Dataset\Parasitized\";
-            var pathUnparasitized = @"‪E:\Neuron Dataset\Unparasitized\";
+            var pathParasitized = @"Parasitized\";
+            var pathUnparasitized = @"Uninfected\";
 
             var convert = new ConvertPicture();
 
@@ -149,11 +149,11 @@ namespace NeuronLandscape.Tests
             var newnetwork = new NeuronNetwork(topology);
 
 
-            double[,] inputsignalparasit = GetDataParasit(pathParasitized, convert, converttestimageparasit);
-            newnetwork.Lean(new double[] { 1.0 }, inputsignalparasit, 100);
+            double[,] inputsignalparasit = GetDataParasit(pathParasitized, convert, converttestimageparasit,100);
+            newnetwork.Lean(new double[] { 1.0 }, inputsignalparasit,1);
 
-            double[,] inputsignalUnParasit = GetDataUnParasit(pathUnparasitized, convert, converttestimageparasit);
-            newnetwork.Lean(new double[] { 0.0 }, inputsignalUnParasit, 100);
+            double[,] inputsignalUnParasit = GetDataUnParasit(pathUnparasitized, convert, converttestimageparasit,100);
+            newnetwork.Lean(new double[] { 0.0 }, inputsignalUnParasit, 1);
 
             var actualparasit = newnetwork.FeedForward(converttestimageparasit.ToArray()).Output;
             Assert.AreEqual(1, Math.Round(actualparasit,2));
@@ -162,17 +162,17 @@ namespace NeuronLandscape.Tests
             Assert.AreEqual(0, Math.Round(actualunparasit,2));
         }
       
-        private static double[,] GetDataParasit(string pathParasitized, ConvertPicture convert, List<double> converttestimage)
+        private static double[,] GetDataParasit(string pathParasitized, ConvertPicture convert, List<double> converttestimage, int size)
         {
             var parasitizenimage = Directory.GetFiles(pathParasitized);
-            var size = 100;
+            
             var inputsignal = new double[size, converttestimage.Count];
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < size; i++)
             {
                 var convertinblack = convert.ConvertInPixel(parasitizenimage[i]);
                 for (int j = 0; j < convertinblack.Count; j++)
                 {
-                    inputsignal[i, j] = convertinblack[i];
+                    inputsignal[i, j] = convertinblack[j];
                 }
 
             }
@@ -180,17 +180,17 @@ namespace NeuronLandscape.Tests
             return inputsignal;
         }
 
-        private static double[,] GetDataUnParasit(string pathUnparasitized, ConvertPicture convert, List<double> converttestimage)
+        private static double[,] GetDataUnParasit(string pathUnparasitized, ConvertPicture convert, List<double> converttestimage,int size)
         {
             var unParasitizenimage = Directory.GetFiles(pathUnparasitized);
-            var size = 100;
-            var inputsignal = new double[size, converttestimage.Count];
-            for (int i = 0; i < 100; i++)
+           
+            var inputsignal = new double[ size, converttestimage.Count];
+            for (int i = 0; i < size; i++)
             {
                 var convertinblack = convert.ConvertInPixel(unParasitizenimage[i]);
                 for (int j = 0; j < convertinblack.Count; j++)
                 {
-                    inputsignal[i, j] = convertinblack[i];
+                    inputsignal[i, j] = convertinblack[j];
                 }
 
             }

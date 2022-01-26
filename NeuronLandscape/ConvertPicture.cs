@@ -14,28 +14,32 @@ namespace NeuronLandscape
         public int Height { get; set; }
 
         public int Width { get; set; }
+
+        //public int Groupsize { get; set; } = 10;
+
         public List<double> ConvertInPixel(string path)
         {
             var result = new List<double>();
 
             var image = new Bitmap(path);
+            var resizeImage = new Bitmap(image, new Size(20, 20));
 
-            Height = image.Width;
-            Width= image.Height;
-
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
+            Height = resizeImage.Width;
+            Width= resizeImage.Height;
+            
+            for (int x = 0; x < resizeImage.Width; x++)
+            {              
+                for (int y = 0; y < resizeImage.Height; y++)
                 {
-                    var pixel = image.GetPixel(x, y);
+                   
+                    var pixel = resizeImage.GetPixel(x, y);
                     var value = Brightness(pixel);
                     result.Add(value);
-
                 }
             }
             return result;
         }
-        //формула по которой темно-серое становиться черным, а светлое белым.
+       
         private double Brightness(Color pixel)
         {
             var result = 0.299 * pixel.R + 0.587 * pixel.G + 0.114 * pixel.B;

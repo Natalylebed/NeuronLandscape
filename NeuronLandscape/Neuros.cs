@@ -19,7 +19,7 @@ namespace NeuronLandscape
         public List<double> _input { get; }
 
         //выход -текущее значение нейрона на данном слое
-        public double Output { get;  set; }
+        public double Output { get;  private set; }
 
         //дельта -ошбка разница между выходом получившимся и ожидаемом при моделирование с извесным выходом
         public double Delta { get; private set; }
