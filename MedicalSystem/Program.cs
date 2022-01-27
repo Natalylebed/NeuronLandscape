@@ -8,9 +8,8 @@ namespace MedicalSystem
 {
     static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        public static SystemController systemController { get; private set; }
+
         [STAThread]
         static void Main()
         {
@@ -18,6 +17,9 @@ namespace MedicalSystem
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+
+            systemController = new SystemController();
+
         }
     }
 }
