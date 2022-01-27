@@ -23,9 +23,12 @@ namespace MedicalSystem
             ToolStripMenuItem ImagefileMenuItem = new ToolStripMenuItem("Проверить изображение");
             fileItem.DropDownItems.Add(ImagefileMenuItem);
             ImagefileMenuItem.Click += ImagefileMenuItem_Clik;
-            
-            fileItem.DropDownItems.Add(new ToolStripMenuItem("Ввести данные"));
-           
+
+            ToolStripMenuItem DatafileMenuItem = new ToolStripMenuItem("Ввести данные");
+            fileItem.DropDownItems.Add(DatafileMenuItem);
+            DatafileMenuItem.Click += DatafileMenuItem_Clik;
+
+
             fileItem.DropDownItems.Add(new ToolStripMenuItem("Выход"));
 
             File.Items.Add(fileItem);
@@ -35,9 +38,10 @@ namespace MedicalSystem
             File.Items.Add(aboutItem);
         }
 
+        
+
         private void ImagefileMenuItem_Clik(object sender, EventArgs e)
         {
-
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var pathimage = openFileDialog.FileName;
@@ -54,8 +58,11 @@ namespace MedicalSystem
         {
             var aboutForm = new AboutBox1();
             aboutForm.ShowDialog();
-
-
+        }
+        private void DatafileMenuItem_Clik(object sender, EventArgs e)
+        {
+            var data = new EnterData();
+            var result=data.ShowForm();
         }
 
 
