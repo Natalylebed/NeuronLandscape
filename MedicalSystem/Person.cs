@@ -8,19 +8,19 @@ namespace MedicalSystem
 {
     public class Person
     {
-        public int Age { get; }
-        public int Sex { get; }
-        public int ChestPaintType { get; }
-        public int BloodPressue { get; }
-        public int Cholesretoral { get; }
-        public int Suger { get; }
-        public int Electrocardiographic { get; }
-        public int HeardRate { get; }
-        public int IncludAngina { get; }
-        public int StDepression { get; }
-        public int Slope { get; }
-        public int NumberMainVessel {get;}
-        public int Thal { get; }
+        public string Age { get; set; }
+        public string Sex { get; set; }
+        public string ChestPaintType { get; set; }
+        public string BloodPressue { get; set; }
+        public string Cholesretoral { get; set; }
+        public string Suger { get; set; }
+        public string Electrocardiographic { get; set; }
+        public string HeardRate { get; set; }
+        public string IncludAngina { get; set; }
+        public string StDepression { get; set; }
+        public string Slope { get; set; }
+        public string NumberMainVessel {get; set; }
+        public string Thal { get; set; }
 
 
     }
