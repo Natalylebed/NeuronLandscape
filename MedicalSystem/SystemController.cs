@@ -9,10 +9,8 @@ namespace MedicalSystem
 {
     public class SystemController
     {
-        public NeuronNetwork DataNetwork { get; }
-        public NeuronNetwork ImageNetwork { get; set; }
-
-        public NeuronNetwork ExitData { get; set; }
+        public NeuronNetwork DataNetwork { get;  }
+        public NeuronNetwork ImageNetwork { get;  }
 
         public SystemController()
         {
@@ -25,25 +23,6 @@ namespace MedicalSystem
         }
        
 
-        //обучили сеть методом обратной ошибки
-
-    //    var difference = neuronNetwork.Lean(output, input, 1000000);
-
-    //    var result = new List<double>();
-    //        //сдемали прогон по сети с новами коэфициентами после обучения
-    //        for(int i = 0; i<output.Length; i++)
-    //        {
-    //            var row = neuronNetwork.GetRow(input, i);
-    //    var res = neuronNetwork.FeedForward(row).Output;
-    //    result.Add(res);
-    //        }
-           
-    //        //сравниваем то что должно получиться -заранее псчитали и наш результат
-    //        for(int i = 0; i<result.Count; i++)
-    //        {
-    //            var expected = Math.Round(output[i], 3);
-    //var actual = Math.Round(result[i], 3);
-    //Assert.AreEqual(expected, actual);
             }
     }
 

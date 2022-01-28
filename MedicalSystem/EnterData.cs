@@ -16,25 +16,27 @@ namespace MedicalSystem
         public EnterData()
         {
             InitializeComponent();
-            var profInfo = typeof(Person).GetProperties(); 
-            for(int i = 0; i <= (profInfo.Length-1); i++)
+
+            var profInfo = typeof(Person).GetProperties();
+
+            for (int i = 0; i <= (profInfo.Length - 1); i++)
             {
                 var properti = profInfo[i];
-                var textbox = CreatTextBox(i,properti);
+                var textbox = CreatTextBox(i, properti);
                 Controls.Add(textbox);
             }
 
-             
+
         }
 
         public bool? ShowForm()
         {
             var form = new EnterData();
-            if(form.ShowDialog()==DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 var person = new Person();
                 var result = Program.systemController.DataNetwork.FeedForward().Output;
-               return result == 1.0;
+                return result == 1.0;
             }
             return null;
         }
@@ -43,19 +45,20 @@ namespace MedicalSystem
 
         }
 
-        private TextBox CreatTextBox (int number, PropertyInfo property)
+        private TextBox CreatTextBox(int number, PropertyInfo property)
         {
-            var y = number * 25+12;
+            var y = number * 25 + 12;
 
-            var textbox = new TextBox();
+            var textbox = new TextBox
             {
-               Anchor = (AnchorStyles)(AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
-               Location = new Point(13, y);
-               Name = "textBox" + number;
-               Size = new Size(304, 23);
-               TabIndex = number;
-            }
+                Anchor = (AnchorStyles)(AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right),
+                Location = new Point(13, y),
+                Name = "textBox" + number,
+                Size = new Size(304, 23),
+                TabIndex = number,
+                Text=property.Name
 
+            };
             return textbox;
         }
 
