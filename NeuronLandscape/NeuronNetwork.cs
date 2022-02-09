@@ -11,7 +11,7 @@ namespace NeuronLandscape
         public Topology Topology { get; }
 
         public List<Layer> layers { get; }
-
+        
         public NeuronNetwork(Topology topology)
         {
             Topology = topology;
@@ -23,6 +23,7 @@ namespace NeuronLandscape
         //посылаем сигналы на первый  слой, потом по остальным слоям и считаем сигнал на выходе
         public Neuron FeedForward(params double[] inputSignal)
         {
+            
 
             SendSighnaltoInputNeurons(inputSignal);
             FeedFoewardAllLayersAfterInput();
@@ -38,14 +39,14 @@ namespace NeuronLandscape
             }
 
         }
-        //метод выполняющий прогон всех вошедших с первого слоя сигналов через все слои с нейронами
+        //метод выполняющий прогон всех outputneuron  с второго слоя  через все слои с нейронами
         public void FeedFoewardAllLayersAfterInput()
         {
             for (int i = 1; i < layers.Count; i++)
             {
                 var layer = layers[i];
 
-                var previousLayerSighnal = layers[i - 1].GetSignal();
+                var previousLayerSighnal = layers[i - 1].GetOutputSignal();
 
                 foreach (var neuron in layer.Neurons)
                 {
@@ -59,7 +60,7 @@ namespace NeuronLandscape
         {
             for (int i = 0; i < inputSignal.Length; i++)
             {
-                //создаем колекцию из одного элемента
+                //создаем колекцию из входящих на первый слой нейронов
                 var signal = new List<double>() { inputSignal[i] };
 
                 var neuron = layers[0].Neurons[i];

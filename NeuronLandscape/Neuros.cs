@@ -41,7 +41,7 @@ namespace NeuronLandscape
             InputWeightRandonValue(inputCount);
         }
 
-        //Задаем рандомные веса -будем исправлять метобом обратной ошибки
+        //Задаем рандомные веса -будем исправлять методом обратной ошибки
 
         private void InputWeightRandonValue(int inputCount)
         {

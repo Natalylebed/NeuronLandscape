@@ -31,8 +31,8 @@ namespace NeuronLandscape
             }
 
         }
-
-        public List<double> GetSignal()
+        //получить текущие значения на нейронах
+        public List<double> GetOutputSignal()
         {
             var result = new List<double>();
 
