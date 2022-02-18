@@ -210,7 +210,7 @@ namespace NeuronLandscape
         //epoch -это эпоха ...один прогон по сети-одна эпоха
         public double Lean(double[] expected, double[,] inputs, int epoch)
         {
-            var signal = Nornalizatoin(inputs);
+            //var signal = Nornalizatoin(inputs);
             var error = 0.0;
             for (int k = 0; k < epoch; k++)
             {
@@ -218,7 +218,7 @@ namespace NeuronLandscape
                 {
                     var output = expected[j];
 
-                    var input = GetRow(signal, j);
+                    var input = GetRow(inputs, j);
 
                     error += Backpropagation(output, input);
                 }

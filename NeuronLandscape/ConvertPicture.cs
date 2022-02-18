@@ -22,7 +22,8 @@ namespace NeuronLandscape
             var result = new List<double>();
 
             var image = new Bitmap(path);
-            var resizeImage = new Bitmap(image, new Size(20, 20));
+
+            var resizeImage = new Bitmap(image, new Size(30, 30));
 
             Height = resizeImage.Width;
             Width= resizeImage.Height;
@@ -32,17 +33,19 @@ namespace NeuronLandscape
                 for (int y = 0; y < resizeImage.Height; y++)
                 {
                    
-                    var pixel = resizeImage.GetPixel(x, y);
-                    var value = Brightness(pixel);
+                    var pixelR = resizeImage.GetPixel(x, y).R;
+                    var pixelG = resizeImage.GetPixel(x, y).G;
+                    var pixelB = resizeImage.GetPixel(x, y).B;
+                    var value = Brightness(pixelR,pixelG,pixelB);
                     result.Add(value);
                 }
             }
             return result;
         }
        
-        private double Brightness(Color pixel)
+        private double Brightness(byte R,byte G,byte B)
         {
-            var result = 0.299 * pixel.R + 0.587 * pixel.G + 0.114 * pixel.B;
+            var result = 0.299 *R + 0.587 * G + 0.114 * B;
             return result < level ? 0 : 1;
         }
         public void Save(string path,List<double> pixel)
