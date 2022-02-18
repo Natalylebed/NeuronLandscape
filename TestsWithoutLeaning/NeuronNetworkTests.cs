@@ -163,7 +163,7 @@ namespace NeuronLandscape.Tests
                 var unpar = inputsignalUnParasit;
                 var par = inputsignalparasit;
                 var random = GetRandomInput(unpar, par);
-                newnetwork.Lean(random.Item1, random.Item2, 20);
+                newnetwork.Lean(random.Item1, random.Item2, 100);
 
             //}
 
@@ -171,7 +171,7 @@ namespace NeuronLandscape.Tests
             //newnetwork.Lean(new double[] { 0.0 }, inputsignalUnParasit, 5);
 
             var actualparasit = newnetwork.FeedForward(converttestimageparasit.ToArray()).Output;
-            Assert.AreEqual(1, Math.Round(actualparasit, 1));
+            Assert.AreEqual(1, Math.Round(actualparasit, 0));
 
             var actualunparasit = newnetwork.FeedForward(converttestimageUnparasit.ToArray()).Output;
             Assert.AreEqual(0, Math.Round(actualunparasit, 1));
@@ -186,24 +186,24 @@ namespace NeuronLandscape.Tests
             var randompar = new double [ row, collum];
             var haveParOrUnpar = new double[row];          
 
-            for (int i = 0; i < collum; i++)
+            for (int i = 0; i < row; i++)
             {
                 var ran = new Random();
-                var ranvalue = ran.Next(0, 1);
+                var ranvalue = ran.Next(1, 3);
 
-                for (int j = 0; j < row;j++)
+                for (int j = 0; j < collum;j++)
 
                 {
                                       
-                    if (ranvalue == 0)
+                    if (ranvalue == 1)
                     {
-                        randompar[j, i] = unpar[j, i];
-                        haveParOrUnpar[j] = 0;
+                        randompar[i,j] = unpar[i, j];
+                        haveParOrUnpar[i] = 0;
                     }
                     else
                     {
-                        randompar[j, i] = par[j, i];
-                        haveParOrUnpar[j] = 1;
+                        randompar[i, j] = par[i, j];
+                        haveParOrUnpar[i] = 1;
 
                     }
                 }                
